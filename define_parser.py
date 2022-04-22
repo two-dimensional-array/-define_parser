@@ -48,6 +48,14 @@ def main(argv: list[str]):
     # Generation a json with all macro names (#defines).
     with open(defines_file, "w") as out:
         json.dump(defines_buffer, out, indent=1)
+    
+    # Modifying existing output source file to use all parsed macro names.
+    with open(output_file, "w+") as output:
+        output_text = ""
+        output_text = output.read()
+        for macro_name, value in defines_buffer.items():
+            output_text = output_text.replace(macro_name, value)
+        output.write(output_text)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
