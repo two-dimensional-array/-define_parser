@@ -50,11 +50,13 @@ def main(argv: list[str]):
         json.dump(defines_buffer, out, indent=1)
     
     # Modifying existing output source file to use all parsed macro names.
-    with open(output_file, "w+") as output:
-        output_text = ""
+    with open(output_file, "r+") as output:
         output_text = output.read()
+        output.seek(0)
+        output.truncate(0)
         for macro_name, value in defines_buffer.items():
-            output_text = output_text.replace(macro_name, value)
+            if not value is None:
+                output_text = output_text.replace(macro_name, value)
         output.write(output_text)
 
 if __name__ == '__main__':
