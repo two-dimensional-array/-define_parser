@@ -21,6 +21,9 @@ def get_defines(fp: IO) -> dict:
                 for pattern in (C_COMMENT_PATTERN, CPP_COMMENT_PATTERN):
                     value = pattern.sub(' ', value)
                 value = value.strip()
+                for temp_macro_name, temp_value in defines.items():
+                    if not temp_value is None:
+                        value = re.sub(f'(?<=[^\d\w_])({temp_macro_name})(?=[^\d\w_])', temp_value, value)
             defines.update({macro_name : value})
 
     return defines
