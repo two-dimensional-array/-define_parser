@@ -56,7 +56,7 @@ def main(argv: list[str]):
         output.truncate(0)
         for macro_name, value in defines_buffer.items():
             if not value is None:
-                output_text = output_text.replace(macro_name, value)
+                output_text = re.sub(f'(?<=[^\d\w_])({macro_name})(?=[^\d\w_])', value, output_text)
         output.write(output_text)
 
 if __name__ == '__main__':
