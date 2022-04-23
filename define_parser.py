@@ -20,13 +20,17 @@ def get_defines(fp: IO) -> dict:
             else:
                 for pattern in (C_COMMENT_PATTERN, CPP_COMMENT_PATTERN):
                     value = pattern.sub(' ', value)
-                value = value.strip()
-                for temp_macro_name, temp_value in defines.items():
-                    if not temp_value is None:
-                        value = re.sub(f'(?<=[^\d\w_])({temp_macro_name})(?=[^\d\w_])', temp_value, value)
+                value = sub_defines_to_string(defines, value.strip())
             defines.update({macro_name : value})
 
     return defines
+
+def sub_defines_to_string(defines: dict, string: str) -> str:
+    for macro_name, value in defines.items():
+        if not value is None:
+            string = re.sub(f'(?<=[^\d\w_])({macro_name})(?=[^\d\w_])', value, string)
+
+    return string;
 
 def main(argv: list[str]):
     header_file = ""
@@ -57,10 +61,7 @@ def main(argv: list[str]):
         output_text = output.read()
         output.seek(0)
         output.truncate(0)
-        for macro_name, value in defines_buffer.items():
-            if not value is None:
-                output_text = re.sub(f'(?<=[^\d\w_])({macro_name})(?=[^\d\w_])', value, output_text)
-        output.write(output_text)
+        output.write(sub_defines_to_string(defines_buffer, output_text))
 
 if __name__ == '__main__':
     main(sys.argv[1:])
