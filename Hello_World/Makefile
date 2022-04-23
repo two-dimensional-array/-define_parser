@@ -128,7 +128,7 @@ LDLIBS=
 LINKER_SCRIPT=
 
 # Custom pre-build commands to run.
-PREBUILD=
+PREBUILD=python ../define_parser.py -i ../mtb_shared/mtb-pdl-cat1/release-v2.4.0/devices/COMPONENT_CAT1A/include/cyb0644abzi_s2d44.h -j defines.json -o main.c
 
 # Custom post-build commands to run.
 POSTBUILD=
