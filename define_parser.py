@@ -78,12 +78,14 @@ def main(argv: list[str]):
     if include_file != "":
         with open(include_file, "r") as include:
             for line in include.readlines():
+                line = line.replace("\n", " ")
                 cmd += f" -I \"{line}\""
 
     # Add defines to compilation command
     if define_file != "":
         with open(define_file, "r") as define:
             for line in define.readlines():
+                line = line.replace("\n", " ")
                 cmd += f" -D {line}"
 
     # Generate defines values by precompiled file
